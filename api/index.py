@@ -53,10 +53,14 @@ def set_value():
 def delete_value():
     data = request.json
     group = data.get('group')
+    value = data.get('value')
     value_id = data.get('value_id')
 
-    if not group or value_id is None:
-        return jsonify({'code': -1, 'msg': 'missing group or value_id'}), 400
+    if not group or (value is None and value_id is None):
+        return jsonify({'code': -1, 'msg': 'missing group and either value or value_id'}), 400
+
+    if value is not None:
+        value_id = generate_md5(value)
 
     removed = rdb().hdel(f'items:group:{group}', value_id)
 
