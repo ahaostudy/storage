@@ -2,11 +2,13 @@ import os
 from typing import Optional
 
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import redis
 import hashlib
 import json
 
 app = Flask(__name__)
+CORS(app)
 
 _rdb: Optional[redis.Redis] = None
 
